@@ -1,5 +1,17 @@
 # image-lambda
+//https://docs.aws.amazon.com/lambda/latest/dg/with-s3-example.html#with-s3-example-test-dummy-event
 
+
+to-do:
+make sure file write works
+
+## Dependencies
+aws-sdk jest
+
+## How to Use
+Lambda should trigger and update the images.json file when a new image is added to the /images folder in the S3 bucket.
+
+## Image URL
 
 
 ## Requirements
