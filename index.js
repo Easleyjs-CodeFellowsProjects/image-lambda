@@ -2,21 +2,12 @@ const { S3 } = require('@aws-sdk/client-s3'); // code preinstalled by AWS, to do
 
 let s3client = new S3({ region: 'us-west-2' });
 
-// utility function to go through the existing array of images, and update/replace if it finds an identical existing one.
-function updateImageArr( imageArr, imageObj ) {
-
-    if ( imageArr.length === 0 ) {
-      console.log('Empty array input.')
-      return [ imageObj ];
-    }
-
-    return imageArr.map(( img ) => {
-      console.log('Non-empty array input.');
-      if ( img.fileName === imageObj.fileName ) {
-            return imageObj
-        }
-        return img;
-    })
+function updateImgCatalog(imgCatalog, imgObj) {
+  if ( imgCatalog.length === 0) {
+    return [ imgObj ]
+  }
+  let filteredArr = imgCatalog.filter(img => img.fileName !== imgObj.fileName);
+  return [ ...filteredArr, imgObj ];
 }
 
 exports.handler = async (event) => {
@@ -25,21 +16,21 @@ exports.handler = async (event) => {
       Bucket: 'lab17-easleyjs-images',
       Key: 'images.json'
   }
-
+  
   // load images.json
-  let imgCatalog = []
+  let imgCatalog = null;
 
   try {
-    const imgJsonResult = await s3client.getObject(imgCatalogPath);
-    let imgJsonResultString = await imgJsonResult.Body.transformToString();
-    imgJsonResultString = JSON.parse(imgJsonResultString);
+    const result = await s3client.getObject(imgCatalogPath);
+    const imgResultString = await result.Body.transformToString();
+    const imgJson = JSON.parse(imgResultString);
 
-    imgCatalog = Array.isArray(imgJsonResultString) ? imgJsonResultString : [];
+    imgCatalog = Array.isArray(imgJson) ? imgJson : [];
   } catch(e) {
     console.log('images.json not found. Creating new file.')
   }
 
-  // get image info from trigger event
+  //get image from event. Add to imgCatalog
   const bucketName = event.Records[0].s3.bucket.name;
   const fileName = event.Records[0].s3.object.key;
   const fileSize = event.Records[0].s3.object.size;
@@ -52,22 +43,24 @@ exports.handler = async (event) => {
     fileType
   }
 
+  const updatedImgCatalog = updateImgCatalog(imgCatalog, imgObj);
+
   // Add image from event into imgCatalog JSON when applicable
-  imgCatalogJSON = JSON.stringify( updateImageArr( imgCatalog, imgObj ));
+  const imgCatalogStr = JSON.stringify(updatedImgCatalog);
 
   // Write JSON back to s3
 
   const putCommand = {
     Bucket: "lab17-easleyjs-images",
     Key: "images.json",
-    Body: imgCatalogJSON,
+    Body: imgCatalogStr,
   };
 
   await s3client.putObject( putCommand );
-  
+
   const response = {
     statusCode: 200,
-    body: JSON.stringify('Added ' + fileName + ' to the manifest'),
-  }; // lambdas use some of the same practices that HTTP servers.
+    body: JSON.stringify('Hello from Lambda!'),
+  };
   return response;
 };

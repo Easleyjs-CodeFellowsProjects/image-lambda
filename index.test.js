@@ -12,7 +12,7 @@ describe('Testing Event Trigger', () => {
               name: 'lab17-easleyjs-images'
             },
             object: {
-              key: 'images/profile_pic.jpg'
+              key: 'images/test.jpg'
             }
           }
         }
@@ -26,6 +26,6 @@ describe('Testing Event Trigger', () => {
 
 describe('Testing Images.json Upload', () => {
   test('Should be able to update the Images.json file without errors', () => {
-      
+
   })
 })
