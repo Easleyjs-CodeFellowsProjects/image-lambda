@@ -11,6 +11,7 @@ Lambda should trigger and update the images.json file when a new image is added 
 
 ## Image.JSON and Images URLs
 https://lab17-imgs.s3.us-west-2.amazonaws.com/images.json
+
 https://lab17-imgs.s3.us-west-2.amazonaws.com/images/
 
 
