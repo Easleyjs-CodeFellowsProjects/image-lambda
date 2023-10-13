@@ -13,7 +13,7 @@ function updateImgCatalog(imgCatalog, imgObj) {
 exports.handler = async (event) => {
 
   let imgCatalogPath = {
-      Bucket: 'lab17-easleyjs-images',
+      Bucket: 'lab17-imgs',
       Key: 'images.json'
   }
   
@@ -51,7 +51,7 @@ exports.handler = async (event) => {
   // Write JSON back to s3
 
   const putCommand = {
-    Bucket: "lab17-easleyjs-images",
+    Bucket: "lab17-imgs",
     Key: "images.json",
     Body: imgCatalogStr,
   };
