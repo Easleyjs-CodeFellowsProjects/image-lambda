@@ -1,9 +1,7 @@
-# image-lambda
-//https://docs.aws.amazon.com/lambda/latest/dg/with-s3-example.html#with-s3-example-test-dummy-event
+# LAB17 - image-lambda
 
-
-to-do:
-make sure file write works
+## Description
+AWS Lambda code which watches for changes to an s3 bucket, and updates a log file called images.json
 
 ## Dependencies
 aws-sdk jest
@@ -11,7 +9,9 @@ aws-sdk jest
 ## How to Use
 Lambda should trigger and update the images.json file when a new image is added to the /images folder in the S3 bucket.
 
-## Image URL
+## Image.JSON and Images URLs
+https://lab17-imgs.s3.us-west-2.amazonaws.com/images.json
+https://lab17-imgs.s3.us-west-2.amazonaws.com/images/
 
 
 ## Requirements
